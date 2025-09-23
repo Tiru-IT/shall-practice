@@ -24,4 +24,5 @@ do
         fi
     else
         echo "already install"
+    fi
 done
