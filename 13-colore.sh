@@ -6,5 +6,5 @@ Y="\e[33m"
 N="\e[0m"
 
 echo -e "$G Success$N"
-echo -e "$R Failer"
+echo -e "$R Failer$N"
 echo "Check this color"
