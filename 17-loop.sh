@@ -12,7 +12,7 @@ SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log" # /var/log/shell-script/16-logs.log
 
 mkdir -p $LOG_FILE
-echo -e "Script started executed at: $(date)" | tee -a $LOG_FILE
+echo "Script started executed at: $(date)"| tee -a $LOG_FILE
 
 if [ $USER_ID -ne 0 ]; then
     echo "ERROR:: please run this script in root user"
@@ -20,10 +20,10 @@ if [ $USER_ID -ne 0 ]; then
 fi
 VALIDATE(){
     if [ $1 -ne 0 ]; then
-        echo "ERROR:: installing $R failed $N $2" | tee -a $LOG_FILE
+        echo -e "ERROR::$2 installing $R failed $N" | tee -a $LOG_FILE
         exit 1
     else
-        echo "installing $G success $N $2" | tee -a $LOG_FILE
+        echo -e "$2 installing $G success $N" | tee -a $LOG_FILE
     fi
 }
 
