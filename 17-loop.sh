@@ -7,27 +7,34 @@ N="\e0m"
 
 USER_ID=$(id -u)
 
+LOGS_FOLDER="/var/log/shell-script"
+SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
+LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log" # /var/log/shell-script/16-logs.log
+
+mkdir -p $LOG_FILE
+echo -e "Script started executed at: $(date)" | tee -a $LOG_FILE
+
 if [ $USER_ID -ne 0 ]; then
     echo "ERROR:: please run this script in root user"
     exit 1
 fi
 VALIDATE(){
     if [ $1 -ne 0 ]; then
-        echo "ERROR:: installing failed $2"
+        echo "ERROR:: installing $R failed $N $2" | tee -a $LOG_FILE
         exit 1
     else
-        echo "installing success $2"
+        echo "installing $G success $N $2" | tee -a $LOG_FILE
     fi
 }
 
 for package in $@
 do
-    dnf list installed $package
+    dnf list installed $package &>>$LOG_FILE
         if [ $? -ne 0 ]; then
-            dnf install $package -y
+            dnf install $package -y &>>$LOG_FILE
             VALIDATE $? "$package"
             
         else
-            echo "already install $package"
+             echo -e "$package already installed ... $Y SKIPPING $N"
         fi
 done
