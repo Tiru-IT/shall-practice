@@ -11,18 +11,22 @@ if [ $USER_ID -ne 0 ]; then
     echo "ERROR:: please run this script in root user"
     exit 1
 fi
+VALIDATE(){
+    if [ $1 -ne 0 ]; then
+        echo "ERROR:: installing failed $2"
+    else
+        echo "installing success $2"
+    fi
+}
 
 for package in $@
 do
     dnf list installed $package
-    if [ $? -ne 0 ]; then
-        dnf install $package -y
         if [ $? -ne 0 ]; then
-            echo "ERROR:: installing failed"
+            dnf install $package -y
+            VALIDATE $? "$package"
+            
         else
-            echo "installing success"
+            echo "already install $package"
         fi
-    else
-        echo "already install"
-    fi
 done
